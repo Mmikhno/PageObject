@@ -16,7 +16,9 @@ public class MoneyTransferTest {
     void shouldTestTransferBetweenTwoOwnCards() {
         var authInfo = DataGenerator.getAuthInfo();
         var verificationCode = DataGenerator.getVerificationCodeFor(authInfo);
-        var dashboardPage = open("http://localhost:9999", LoginPage.class).validLogin(authInfo).validVerify(verificationCode);
+        var loginPage = open("http://localhost:9999", LoginPage.class);
+        var verificationPage = loginPage.validLogin(authInfo);
+        var dashboardPage = verificationPage.validVerify(verificationCode);
         //сохранить начальные балансы на картах
         int startBalFirst = dashboardPage.getCardBalance(DataGenerator.getFirstCard().getId());
         int startBalSecond = dashboardPage.getCardBalance(DataGenerator.getSecondCard().getId());
