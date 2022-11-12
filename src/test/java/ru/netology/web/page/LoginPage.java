@@ -1,8 +1,10 @@
 package ru.netology.web.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.web.data.DataGenerator;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage {
@@ -18,8 +20,8 @@ public class LoginPage {
         return new VerificationPage();
     }
 
-    public SelenideElement getNotification() {
-        return notification;
+    public void notificationVisibility() {
+        notification.shouldBe(Condition.visible).shouldHave(text("Ошибка! Неверно указан логин или пароль"));
     }
 
 }

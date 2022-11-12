@@ -1,8 +1,10 @@
 package ru.netology.web.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.web.data.DataGenerator;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
 public class TransferPage {
@@ -13,28 +15,22 @@ public class TransferPage {
     private SelenideElement notification = $("[data-test-id='error-notification']");
     private SelenideElement notificationContent = notification.$(".notification__content");
 
-    public DashboardPage TransferBetweenCards(DataGenerator.Card card, int amount) {
+    public DashboardPage transferBetweenCards(DataGenerator.Card card, int amount) {
         amountField.setValue(String.valueOf(amount));
         fromField.setValue(card.getCardNum());
         actionButton.click();
         return new DashboardPage();
     }
 
-    public DashboardPage TransferCancellation() {
+    public DashboardPage transferCancellation() {
         actionCancel.click();
         return new DashboardPage();
     }
 
-
-    public SelenideElement getNotification() {
-        return notification;
+    public void notificationVisibility() {
+        actionButton.click();
+        notificationContent.shouldBe(Condition.visible).shouldHave(text("Ошибка! Произошла ошибка"));
     }
 
-    public SelenideElement getActionButton() {
-        return actionButton;
-    }
 
-    public SelenideElement getNotificationContent() {
-        return notificationContent;
-    }
 }

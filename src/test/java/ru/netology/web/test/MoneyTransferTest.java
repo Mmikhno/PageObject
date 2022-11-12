@@ -26,7 +26,7 @@ public class MoneyTransferTest {
         TransferPage transferPage = dashboardPage.moneyTransferTo(DataGenerator.getSecondCard());
         int amount = startBalFirst / 2;
         //перевести на вторую карту с первой
-        transferPage.TransferBetweenCards(DataGenerator.getFirstCard(), amount);
+        transferPage.transferBetweenCards(DataGenerator.getFirstCard(), amount);
         int finalBalanceFirst = dashboardPage.getCardBalance(DataGenerator.getFirstCard().getId());
         int finalBalanceSecond = dashboardPage.getCardBalance(DataGenerator.getSecondCard().getId());
         Assertions.assertEquals(startBalFirst - amount, finalBalanceFirst);
@@ -38,7 +38,7 @@ public class MoneyTransferTest {
         var authInfo = DataGenerator.getWrongAuthInfo();
         var loginPage = open("http://localhost:9999", LoginPage.class);
         loginPage.validLogin(authInfo);
-        loginPage.getNotification().shouldHave(text("Ошибка! Неверно указан логин или пароль"));
+        loginPage.notificationVisibility();
     }
 
     @Test
@@ -50,7 +50,7 @@ public class MoneyTransferTest {
         int startBalFirst = dashboardPage.getCardBalance(DataGenerator.getFirstCard().getId());
         int startBalSecond = dashboardPage.getCardBalance(DataGenerator.getSecondCard().getId());
         TransferPage transferPage = dashboardPage.moneyTransferTo(DataGenerator.getSecondCard());
-        transferPage.TransferCancellation();
+        transferPage.transferCancellation();
         Assertions.assertEquals(startBalFirst, dashboardPage.getCardBalance(DataGenerator.getFirstCard().getId()));
         Assertions.assertEquals(startBalSecond, dashboardPage.getCardBalance(DataGenerator.getSecondCard().getId()));
     }
@@ -63,7 +63,7 @@ public class MoneyTransferTest {
         int startBalFirst = dashboardPage.getCardBalance(DataGenerator.getFirstCard().getId());
         int startBalSecond = dashboardPage.getCardBalance(DataGenerator.getSecondCard().getId());
         TransferPage transferPage = dashboardPage.moneyTransferTo(DataGenerator.getFirstCard());
-        transferPage.TransferBetweenCards(DataGenerator.getFirstCard(), 0);
+        transferPage.transferBetweenCards(DataGenerator.getFirstCard(), 0);
         Assertions.assertEquals(startBalFirst, dashboardPage.getCardBalance(DataGenerator.getFirstCard().getId()));
         Assertions.assertEquals(startBalSecond, dashboardPage.getCardBalance(DataGenerator.getSecondCard().getId()));
     }
@@ -74,8 +74,7 @@ public class MoneyTransferTest {
         var verificationCode = DataGenerator.getVerificationCodeFor(authInfo);
         var dashboardPage = open("http://localhost:9999", LoginPage.class).validLogin(authInfo).validVerify(verificationCode);
         TransferPage transferPage = dashboardPage.moneyTransferTo(DataGenerator.getSecondCard());
-        transferPage.getActionButton().click();
-        transferPage.getNotificationContent().shouldHave(text("Ошибка! Произошла ошибка"));
+        transferPage.notificationVisibility();
     }
 
     @Test
@@ -84,7 +83,7 @@ public class MoneyTransferTest {
         var verificationCode = DataGenerator.getOtherVerificationCode(authInfo);
         var verificationPage = open("http://localhost:9999", LoginPage.class).validLogin(authInfo);
         verificationPage.validVerify(verificationCode);
-        verificationPage.getNotification().shouldHave(text("Ошибка! Неверно указан код! Попробуйте ещё раз."));
+        verificationPage.notificationVisibility();
     }
 
 }

@@ -1,8 +1,10 @@
 package ru.netology.web.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.web.data.DataGenerator;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
 public class VerificationPage {
@@ -20,7 +22,7 @@ public class VerificationPage {
         return new DashboardPage();
     }
 
-    public SelenideElement getNotification() {
-        return notification;
+    public void notificationVisibility() {
+        notification.shouldBe(Condition.visible).shouldHave(text("Ошибка! Неверно указан код! Попробуйте ещё раз."));
     }
 }
